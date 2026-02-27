@@ -1,0 +1,16 @@
+{
+  "name": "ekhanij-exploration",
+  "version": "2.0.0",
+  "private": true,
+  "workspaces": [
+    "web",
+    "mobile",
+    "packages/shared"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev -w web",
+    "build:web": "npm run build -w web",
+    "dev:mobile": "npm run start -w mobile",
+    "build:mobile": "npm run build -w mobile"
+  }
+}
