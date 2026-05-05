@@ -6,18 +6,32 @@ export default function FieldVerifyScreen() {
   const [applicationId, setApplicationId] = useState('');
   const [remarks, setRemarks] = useState('');
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [isCapturingLocation, setIsCapturingLocation] = useState(false);
 
   const getLocation = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permission needed', 'Location is required for field verification.');
-      return;
+    if (isCapturingLocation) return;
+
+    setIsCapturingLocation(true);
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission needed', 'Location is required for field verification.');
+        return;
+      }
+
+      const loc = await Location.getCurrentPositionAsync({});
+      setLocation({
+        lat: loc.coords.latitude,
+        lng: loc.coords.longitude,
+      });
+    } catch {
+      Alert.alert(
+        'Location unavailable',
+        'Unable to capture the current location. Please check GPS/network availability and try again.'
+      );
+    } finally {
+      setIsCapturingLocation(false);
     }
-    const loc = await Location.getCurrentPositionAsync({});
-    setLocation({
-      lat: loc.coords.latitude,
-      lng: loc.coords.longitude,
-    });
   };
 
   const submit = () => {
@@ -39,9 +53,17 @@ export default function FieldVerifyScreen() {
         placeholderTextColor="#78716c"
       />
       <Text style={styles.label}>Capture location (for site visit)</Text>
-      <TouchableOpacity style={styles.locationBtn} onPress={getLocation}>
+      <TouchableOpacity
+        style={styles.locationBtn}
+        onPress={getLocation}
+        disabled={isCapturingLocation}
+      >
         <Text style={styles.locationBtnText}>
-          {location ? `${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}` : 'Get current location'}
+          {isCapturingLocation
+            ? 'Capturing location...'
+            : location
+              ? `${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}`
+              : 'Get current location'}
         </Text>
       </TouchableOpacity>
       <Text style={styles.label}>Remarks</Text>
