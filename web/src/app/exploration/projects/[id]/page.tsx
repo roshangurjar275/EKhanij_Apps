@@ -60,8 +60,13 @@ function getProject(id: string) {
   return null;
 }
 
-export default function ProjectDetailPage({ params }: { params: { id: string } }) {
-  const p = getProject(params.id);
+export default async function ProjectDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const p = getProject(id);
   if (!p) notFound();
 
   const sourceLabel =
