@@ -39,8 +39,13 @@ function getApplication(id: string) {
   return null;
 }
 
-export default function ApplicationDetailPage({ params }: { params: { id: string } }) {
-  const app = getApplication(params.id);
+export default async function ApplicationDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const app = getApplication(id);
   if (!app) notFound();
 
   return (
