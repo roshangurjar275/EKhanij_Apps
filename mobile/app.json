@@ -3,6 +3,7 @@
     "name": "E-Khanij 2.0 Exploration",
     "slug": "ekhanij-exploration",
     "version": "2.0.0",
+    "platforms": ["ios", "android"],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "ekhanij",
