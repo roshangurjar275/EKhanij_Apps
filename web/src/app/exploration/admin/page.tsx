@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import {
   STATUS_LABELS,
-  PROJECT_STATUS_OPTIONS,
   MINERAL_COMMODITY_TYPES,
   ADMIN_ACTIONS,
 } from '@ekhanij/shared';
@@ -62,7 +61,6 @@ export default function StateAdminPage() {
   const [search, setSearch] = useState('');
   const [actionModal, setActionModal] = useState<{ project: ExplorationProject } | null>(null);
   const [adminRemarks, setAdminRemarks] = useState('');
-  const [selectedAction, setSelectedAction] = useState<'APPROVE' | 'SEND_FOR_REVISION' | null>(null);
 
   const filtered = mockProjects.filter((p) => {
     if (filterStatus !== 'ALL' && p.status !== filterStatus) return false;
@@ -77,14 +75,12 @@ export default function StateAdminPage() {
   });
 
   const handleAction = (action: 'APPROVE' | 'SEND_FOR_REVISION') => {
-    setSelectedAction(action);
     if (actionModal) {
       alert(
         `Action: ${action === 'APPROVE' ? 'Approve' : 'Send for Revision'}\nRemarks: ${adminRemarks || '—'}`
       );
       setActionModal(null);
       setAdminRemarks('');
-      setSelectedAction(null);
     }
   };
 
