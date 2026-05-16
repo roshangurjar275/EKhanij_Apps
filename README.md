@@ -17,7 +17,7 @@ Features (per SRS): **Agency onboarding**, **Fill Agency Onboarding Form** (Expl
 
 ## Prerequisites
 
-- **Node.js** 18+
+- **Node.js** 20.9+
 - **npm** (or yarn/pnpm)
 - For mobile: **Expo Go** on device/simulator, or **Android Studio** / **Xcode** for builds
 
