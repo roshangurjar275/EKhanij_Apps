@@ -62,13 +62,13 @@ Screens:
 
 ## Mobile assets (Expo)
 
-If you see missing asset errors, add under `mobile/assets/`:
+The mobile app currently uses Expo defaults for icon and splash assets. To brand the
+app, add the image files under `mobile/assets/` and then reference them from
+`mobile/app.json`:
 
-- **icon.png** — 1024×1024 app icon  
-- **splash-icon.png** — splash screen image  
-- **adaptive-icon.png** — 1024×1024 Android adaptive icon  
-
-Or temporarily remove/comment the `icon`, `splash`, and `adaptiveIcon` entries in `mobile/app.json` to use Expo defaults.
+- **icon.png** — 1024×1024 app icon
+- **splash-icon.png** — splash screen image
+- **adaptive-icon.png** — 1024×1024 Android adaptive icon
 
 ## Tech stack
 
