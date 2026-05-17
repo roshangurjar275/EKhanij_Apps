@@ -12,5 +12,8 @@
     "build:web": "npm run build -w web",
     "dev:mobile": "npm run start -w mobile",
     "build:mobile": "npm run build -w mobile"
+  },
+  "devDependencies": {
+    "eslint": "9.39.4"
   }
 }
