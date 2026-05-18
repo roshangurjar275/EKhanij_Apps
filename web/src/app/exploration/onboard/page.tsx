@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -10,6 +10,36 @@ import {
   PROJECT_STATUS_OPTIONS,
   FURTHER_ACTION_OPTIONS,
 } from '@ekhanij/shared';
+
+const ONBOARDING_DRAFT_KEY = 'ekhanij:exploration:onboarding-draft';
+
+type ProjectStatusValue = 'WIP' | 'ONGOING' | 'COMPLETED';
+
+interface OnboardingDraft {
+  projectName: string;
+  districts: string[];
+  area: string;
+  areaHectares: string;
+  sourceOfFunding: string;
+  mineralCommodityType: string;
+  mineralCommodity: string;
+  gradeSubGrade: string;
+  levelOfExploration: string;
+  budgetSanctioned: string;
+  budgetAccrued: string;
+  projectStatus: ProjectStatusValue;
+  approximateProgressPercent: string;
+  furtherActionByAgency: string;
+  toposheetNumber: string;
+  resourceName: string;
+  tonnage: string;
+  conclusionRecommendation: string;
+  kmlUploaded: boolean;
+  previousWorkStudyUploaded: boolean;
+}
+
+const isProjectStatusValue = (value: unknown): value is ProjectStatusValue =>
+  value === 'WIP' || value === 'ONGOING' || value === 'COMPLETED';
 
 /** SRS UC-02: Fill Agency Onboarding for Exploration - Exploration Area Details */
 export default function OnboardFormPage() {
@@ -35,15 +65,93 @@ export default function OnboardFormPage() {
   const [kmlUploaded, setKmlUploaded] = useState(false);
   const [previousWorkStudyUploaded, setPreviousWorkStudyUploaded] = useState(false);
 
+  useEffect(() => {
+    const rawDraft = window.localStorage.getItem(ONBOARDING_DRAFT_KEY);
+    if (!rawDraft) return;
+
+    try {
+      const draft = JSON.parse(rawDraft) as Partial<OnboardingDraft>;
+      setProjectName(draft.projectName ?? '');
+      setDistricts(
+        Array.isArray(draft.districts)
+          ? draft.districts.filter((district): district is string => typeof district === 'string')
+          : []
+      );
+      setArea(draft.area ?? '');
+      setAreaHectares(draft.areaHectares ?? '');
+      setSourceOfFunding(draft.sourceOfFunding ?? 'NMEDT');
+      setMineralCommodityType(draft.mineralCommodityType ?? 'PEL');
+      setMineralCommodity(draft.mineralCommodity ?? '');
+      setGradeSubGrade(draft.gradeSubGrade ?? '');
+      setLevelOfExploration(draft.levelOfExploration ?? 'G1');
+      setBudgetSanctioned(draft.budgetSanctioned ?? '');
+      setBudgetAccrued(draft.budgetAccrued ?? '');
+      setProjectStatus(isProjectStatusValue(draft.projectStatus) ? draft.projectStatus : 'WIP');
+      setApproximateProgressPercent(draft.approximateProgressPercent ?? '');
+      setFurtherActionByAgency(draft.furtherActionByAgency ?? 'NO_ACTION');
+      setToposheetNumber(draft.toposheetNumber ?? '');
+      setResourceName(draft.resourceName ?? '');
+      setTonnage(draft.tonnage ?? '');
+      setConclusionRecommendation(draft.conclusionRecommendation ?? '');
+      setKmlUploaded(Boolean(draft.kmlUploaded));
+      setPreviousWorkStudyUploaded(Boolean(draft.previousWorkStudyUploaded));
+    } catch {
+      window.localStorage.removeItem(ONBOARDING_DRAFT_KEY);
+    }
+  }, []);
+
+  const buildDraft = (): OnboardingDraft => ({
+    projectName,
+    districts,
+    area,
+    areaHectares,
+    sourceOfFunding,
+    mineralCommodityType,
+    mineralCommodity,
+    gradeSubGrade,
+    levelOfExploration,
+    budgetSanctioned,
+    budgetAccrued,
+    projectStatus,
+    approximateProgressPercent,
+    furtherActionByAgency,
+    toposheetNumber,
+    resourceName,
+    tonnage,
+    conclusionRecommendation,
+    kmlUploaded,
+    previousWorkStudyUploaded,
+  });
+
+  const saveDraft = () => {
+    try {
+      window.localStorage.setItem(ONBOARDING_DRAFT_KEY, JSON.stringify(buildDraft()));
+      return true;
+    } catch {
+      alert('Unable to save the draft in this browser. Please try again before leaving this page.');
+      return false;
+    }
+  };
+
   const toggleDistrict = (d: string) => {
     setDistricts((prev) =>
       prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d]
     );
   };
 
-  const handleSubmit = (e: React.FormEvent, asDraft: boolean) => {
+  const handleSubmit = (e: { preventDefault: () => void }, asDraft: boolean) => {
     e.preventDefault();
-    if (!asDraft && !projectName.trim()) return;
+    if (asDraft) {
+      if (!saveDraft()) return;
+      router.push('/exploration/projects');
+      return;
+    }
+    if (!projectName.trim()) return;
+    if (!kmlUploaded) {
+      alert('KML upload is mandatory before submitting.');
+      return;
+    }
+    if (!saveDraft()) return;
     router.push('/exploration/projects');
   };
 
