@@ -62,13 +62,12 @@ Screens:
 
 ## Mobile assets (Expo)
 
-If you see missing asset errors, add under `mobile/assets/`:
+The mobile app currently uses Expo's default icon and splash assets so a clean checkout can start without additional files.
+To use branded assets, add them under `mobile/assets/` and reference them from `mobile/app.json`:
 
 - **icon.png** — 1024×1024 app icon  
 - **splash-icon.png** — splash screen image  
 - **adaptive-icon.png** — 1024×1024 Android adaptive icon  
-
-Or temporarily remove/comment the `icon`, `splash`, and `adaptiveIcon` entries in `mobile/app.json` to use Expo defaults.
 
 ## Tech stack
 
