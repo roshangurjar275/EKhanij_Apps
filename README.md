@@ -60,15 +60,15 @@ Screens:
 
 - Home → Dashboard, My Applications, Exploration Blocks, Check Status, **Field verification** (location + remarks)
 
-## Mobile assets (Expo)
+## Mobile build targets (Expo)
 
-If you see missing asset errors, add under `mobile/assets/`:
+The mobile app is configured for native `ios` and `android` export only. It uses Expo
+default icon and splash assets until project-specific images are added. To customize
+branding, add files under `mobile/assets/` and reference them in `mobile/app.json`:
 
 - **icon.png** — 1024×1024 app icon  
 - **splash-icon.png** — splash screen image  
-- **adaptive-icon.png** — 1024×1024 Android adaptive icon  
-
-Or temporarily remove/comment the `icon`, `splash`, and `adaptiveIcon` entries in `mobile/app.json` to use Expo defaults.
+- **adaptive-icon.png** — 1024×1024 Android adaptive icon
 
 ## Tech stack
 
