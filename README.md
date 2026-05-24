@@ -62,19 +62,19 @@ Screens:
 
 ## Mobile assets (Expo)
 
-If you see missing asset errors, add under `mobile/assets/`:
+The mobile app currently uses Expo default native icons/splash assets. If branded assets are added later, place them under `mobile/assets/` and reference them from `mobile/app.json`:
 
 - **icon.png** — 1024×1024 app icon  
 - **splash-icon.png** — splash screen image  
 - **adaptive-icon.png** — 1024×1024 Android adaptive icon  
 
-Or temporarily remove/comment the `icon`, `splash`, and `adaptiveIcon` entries in `mobile/app.json` to use Expo defaults.
+Leaving those entries absent uses Expo defaults and avoids clean-build failures when asset files are not present.
 
 ## Tech stack
 
 | Layer    | Web              | Mobile        |
 |----------|------------------|---------------|
-| Framework | Next.js 14 (App Router) | Expo SDK 52, Expo Router |
+| Framework | Next.js 16 (App Router) | Expo SDK 52, Expo Router |
 | Language | TypeScript       | TypeScript    |
 | UI       | Tailwind CSS     | React Native StyleSheet |
 | Shared   | `@ekhanij/shared` | `@ekhanij/shared` |
