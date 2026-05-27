@@ -11,7 +11,7 @@ Features (per SRS): **Agency onboarding**, **Fill Agency Onboarding Form** (Expl
 
 ## Repository structure
 
-- **`web/`** — Next.js 14 web app (Exploration dashboard, applications, blocks, status, login/register)
+- **`web/`** — Next.js 16 web app (Exploration dashboard, applications, blocks, status, login/register)
 - **`mobile/`** — Expo (React Native) app for Android/iOS (Exploration screens + field verification with location)
 - **`packages/shared/`** — Shared TypeScript types and constants (`@ekhanij/shared`)
 
@@ -62,19 +62,14 @@ Screens:
 
 ## Mobile assets (Expo)
 
-If you see missing asset errors, add under `mobile/assets/`:
-
-- **icon.png** — 1024×1024 app icon  
-- **splash-icon.png** — splash screen image  
-- **adaptive-icon.png** — 1024×1024 Android adaptive icon  
-
-Or temporarily remove/comment the `icon`, `splash`, and `adaptiveIcon` entries in `mobile/app.json` to use Expo defaults.
+The mobile app currently uses Expo default icons/splash assets and exports native bundles only (`ios`, `android`).
+If custom branding assets are added later, place them under `mobile/assets/` and reference them from `mobile/app.json`.
 
 ## Tech stack
 
 | Layer    | Web              | Mobile        |
 |----------|------------------|---------------|
-| Framework | Next.js 14 (App Router) | Expo SDK 52, Expo Router |
+| Framework | Next.js 16 (App Router) | Expo SDK 52, Expo Router |
 | Language | TypeScript       | TypeScript    |
 | UI       | Tailwind CSS     | React Native StyleSheet |
 | Shared   | `@ekhanij/shared` | `@ekhanij/shared` |
